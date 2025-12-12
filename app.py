@@ -155,7 +155,7 @@ elif page == "Trends":
         y='line_revenue',
         markers=True,
         title="Daily Revenue Trend"
-    ), x='date', y='line_revenue', markers=True)
+        x='date', y='line_revenue', markers=True)
     st.plotly_chart(fig, use_container_width=True)
 
 # --------------------
