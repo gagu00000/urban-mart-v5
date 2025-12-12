@@ -112,13 +112,14 @@ elif page == "Store Insights":
 
 
 # --------------------
-# PAGE 4 – DAILY REVENUE TRENDS
+# PAGE 4 –  REVENUE TRENDS
 # --------------------
 elif page == "Trends":
     st.title("📅 Revenue Trends")
     daily = filtered_df.groupby('date')['line_revenue'].sum().reset_index()
     fig = px.line(daily, x='date', y='line_revenue', markers=True)
     st.plotly_chart(fig, use_container_width=True)
+
 
 # --------------------
 # PAGE 5 – TOP PERFORMERS
