@@ -146,7 +146,7 @@ st.plotly_chart(fig, use_container_width=True)
 # --------------------
 # PAGE 4 – DAILY REVENUE TRENDS
 # --------------------
-elif page == "Trends":
+ elif page == "Trends":
     st.title("📅 Revenue Trends")
     daily = filtered_df.groupby('date')['line_revenue'].sum().reset_index()
     fig = px.line(
