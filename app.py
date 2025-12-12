@@ -112,22 +112,24 @@ elif page == "Store Insights":
 
 
 # --------------------
-# PAGE 4 –  REVENUE TRENDS
+# PAGE 4 – DAILY REVENUE TRENDS
 # --------------------
 elif page == "Trends":
     st.title("📅 Revenue Trends")
     daily = filtered_df.groupby('date')['line_revenue'].sum().reset_index()
 
-    # Smooth curved line graph
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=daily['date'],
-        y=daily['line_revenue'],
-        mode='lines+markers',
-        line_shape='spline'  # makes it a smooth curve
-    ))
+    fig = px.line(
+        daily,
+        x="date",
+        y="line_revenue",
+        markers=True
+    )
+
+    # Force smooth curve using spline
+    fig.update_traces(line_shape='spline')
 
     st.plotly_chart(fig, use_container_width=True)
+
 
 
 
