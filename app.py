@@ -251,25 +251,28 @@ with col2:
 st.markdown("---")
 
 # ============================================================
-# DAILY REVENUE TREND
+# MONTHLY REVENUE TREND
 # ============================================================
 
-st.header("📅 Daily Revenue Trend")
+st.header("📅 Monthly Revenue Trend")
 
-daily_revenue = df_filtered.groupby('date')['line_revenue'].sum().reset_index()
+# Aggregate revenue by month
+df_filtered['month'] = df_filtered['date'].dt.to_period('M')
+monthly_revenue = df_filtered.groupby('month')['line_revenue'].sum().reset_index()
+monthly_revenue['month'] = monthly_revenue['month'].dt.to_timestamp()
 
 fig_trend = px.line(
-    daily_revenue,
-    x='date',
+    monthly_revenue,
+    x='month',
     y='line_revenue',
-    title="Revenue Trend Over Time",
-    labels={'date': 'Date', 'line_revenue': 'Revenue ($)'},
+    title="Monthly Revenue Trend",
+    labels={'month': 'Month', 'line_revenue': 'Revenue ($)'},
     markers=True
 )
 
 fig_trend.update_traces(line_color='#FF6692', line_width=3)
 fig_trend.update_layout(
-    xaxis_title="Date",
+    xaxis_title="Month",
     yaxis_title="Revenue ($)",
     height=400,
     hovermode='x unified'
