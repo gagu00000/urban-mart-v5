@@ -99,8 +99,17 @@ elif page == "Category Insights":
 elif page == "Store Insights":
     st.title("🏪 Store Insights")
     store_rev = filtered_df.groupby('store_location')['line_revenue'].sum().reset_index()
-    fig = px.bar(store_rev, x='store_location', y='line_revenue', color='line_revenue', color_continuous_scale='Greys')
+    
+    # 🔵 Updated color scheme to match others (using Blues instead of Greys)
+    fig = px.bar(
+        store_rev,
+        x='store_location',
+        y='line_revenue',
+        color='line_revenue',
+        color_continuous_scale='Blues'
+    )
     st.plotly_chart(fig, use_container_width=True)
+
 
 # --------------------
 # PAGE 4 – DAILY REVENUE TRENDS
