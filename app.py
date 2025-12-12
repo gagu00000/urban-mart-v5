@@ -11,40 +11,7 @@ st.set_page_config(page_title="UrbanMart Sales Dashboard", page_icon="🛒", lay
 # --------------------
 # LOAD DATA
 # --------------------
-# --------------------
-# OPTIONAL HELPER FILTER FUNCTION (added as requested)
-# --------------------
-def filter_data(df, start_date=None, end_date=None, store=None, channel=None):
-    filtered_df = df.copy()
-
-    if start_date and end_date:
-        filtered_df = filtered_df[(filtered_df['date'] >= pd.to_datetime(start_date)) & (filtered_df['date'] <= pd.to_datetime(end_date))]
-    if store:
-        filtered_df = filtered_df[filtered_df['store_location'].isin(store)]
-    if channel and channel != "All":
-        filtered_df = filtered_df[filtered_df['channel'] == channel]
-
-    return filtered_df
-
 @st.cache_data
-def filter_data(df, start_date=None, end_date=None, store=None, channel=None):
-    filtered_df = df.copy()
-
-    if start_date and end_date:
-        filtered_df = filtered_df[
-            (filtered_df['date'] >= pd.to_datetime(start_date)) &
-            (filtered_df['date'] <= pd.to_datetime(end_date))
-        ]
-
-    if store:
-        filtered_df = filtered_df[filtered_df['store_location'].isin(store)]
-
-    if channel and channel != "All":
-        filtered_df = filtered_df[filtered_df['channel'] == channel]
-
-    return filtered_df
-
-
 def load_data():
     df = pd.read_csv("urbanmart_sales.csv")
     df['date'] = pd.to_datetime(df['date'])
@@ -132,30 +99,16 @@ elif page == "Category Insights":
 elif page == "Store Insights":
     st.title("🏪 Store Insights")
     store_rev = filtered_df.groupby('store_location')['line_revenue'].sum().reset_index()
-
-fig = px.bar(
-    store_rev,
-    x='store_location',
-    y='line_revenue',
-    color='store_location',   # categorical colors (fix applied)
-    title="Store Revenue"
-)
-
-st.plotly_chart(fig, use_container_width=True)
+    fig = px.bar(store_rev, x='store_location', y='line_revenue', color='line_revenue', color_continuous_scale='Greys')
+    st.plotly_chart(fig, use_container_width=True)
 
 # --------------------
 # PAGE 4 – DAILY REVENUE TRENDS
 # --------------------
- elif page == "Trends":
+elif page == "Trends":
     st.title("📅 Revenue Trends")
     daily = filtered_df.groupby('date')['line_revenue'].sum().reset_index()
-    fig = px.line(
-        daily,
-        x='date',
-        y='line_revenue',
-        markers=True,
-        title="Daily Revenue Trend"
-        x='date', y='line_revenue', markers=True)
+    fig = px.line(daily, x='date', y='line_revenue', markers=True)
     st.plotly_chart(fig, use_container_width=True)
 
 # --------------------
